@@ -1,9 +1,14 @@
 'use client';
 
-import React, { useState } from 'react';
-import Masonry from 'react-masonry-css';
+import React, { useState, useCallback } from 'react';
+import dynamic from 'next/dynamic';
 import Image from 'next/image';
-import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
+
+// Dynamically import Masonry and Dialog components
+const Masonry = dynamic(() => import('react-masonry-css'), { ssr: false });
+const Dialog = dynamic(() => import('@/components/ui/dialog').then(mod => ({ default: mod.Dialog })), { ssr: false });
+const DialogContent = dynamic(() => import('@/components/ui/dialog').then(mod => ({ default: mod.DialogContent })), { ssr: false });
+const DialogTrigger = dynamic(() => import('@/components/ui/dialog').then(mod => ({ default: mod.DialogTrigger })), { ssr: false });
 
 const mediaUrls = [
   '/gallery/1 (1).heic',
@@ -11,18 +16,15 @@ const mediaUrls = [
   '/gallery/1.jpg',
   '/gallery/1 (1).jpg',
   '/gallery/1.gif',
-
   '/gallery/1 (2).jpg',
-
   '/gallery/1 (3).jpg',
- 
   '/gallery/1 (4).jpg',
   '/gallery/1 (5).jpg',
   '/gallery/girl.jpg',
   '/gallery/1 (6).jpg',
   '/gallery/1 (8).jpg',
   '/gallery/1 (9).jpg',
-  '/gallery/1.mp4',  // Fixed typo from "/gallert/1.mp4" to "/gallery/1.mp4"
+  '/gallery/1.mp4',
   '/gallery/1 (10).jpg',
 ];
 
@@ -33,10 +35,14 @@ const breakpointColumnsObj = {
   500: 1,
 };
 
+const isVideo = (url: string) => url.endsWith('.mp4');
+
 function GalleryPage() {
   const [selectedMedia, setSelectedMedia] = useState<string | null>(null);
 
-  const isVideo = (url: string) => url.endsWith('.mp4');
+  const handleMediaClick = useCallback((url: string) => {
+    setSelectedMedia(url);
+  }, []);
 
   return (
     <div className="max-w-3xl mx-auto min-h-screen px-2">
@@ -52,14 +58,14 @@ function GalleryPage() {
             <DialogTrigger asChild>
               <div
                 className="relative w-full rounded-lg overflow-hidden group cursor-pointer"
-                onClick={() => setSelectedMedia(url)}
+                onClick={() => handleMediaClick(url)}
               >
                 {isVideo(url) ? (
                   <video
                     src={url}
                     className="rounded-lg w-full h-auto transition-transform duration-300 group-hover:scale-105"
                     controls
-                   
+                    preload="none"
                   />
                 ) : (
                   <Image
@@ -70,6 +76,7 @@ function GalleryPage() {
                     layout="responsive"
                     objectFit="cover"
                     className="rounded-lg transition-transform duration-300 group-hover:scale-105"
+                    loading="lazy"
                     onError={(e) => {
                       console.error(`Failed to load image: ${url}`);
                       e.currentTarget.src = '/fallback-image.png';
@@ -79,13 +86,12 @@ function GalleryPage() {
               </div>
             </DialogTrigger>
 
-            {/* Dialog Content */}
-            <DialogContent >
+            <DialogContent>
               {selectedMedia &&
                 (isVideo(selectedMedia) ? (
                   <video
                     src={selectedMedia}
-                    className="rounded-lg w-full "
+                    className="rounded-lg w-full"
                     controls
                     autoPlay
                   />
@@ -97,7 +103,7 @@ function GalleryPage() {
                     height={300}
                     layout="responsive"
                     objectFit="fill"
-                    className="rounded-lg p-4 "
+                    className="rounded-lg p-4"
                   />
                 ))}
             </DialogContent>
@@ -108,4 +114,4 @@ function GalleryPage() {
   );
 }
 
-export default GalleryPage;
+export default React.memo(GalleryPage);
