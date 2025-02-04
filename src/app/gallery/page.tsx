@@ -65,7 +65,7 @@ function GalleryPage() {
                     src={url}
                     className="rounded-lg w-full h-auto transition-transform duration-300 group-hover:scale-105"
                     controls
-                    preload="none"
+                    poster="/path/to/poster-image.jpg" // Add a poster image for the video
                   />
                 ) : (
                   <Image
