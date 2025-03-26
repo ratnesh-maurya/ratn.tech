@@ -61,8 +61,14 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
+      <head>
+        <link
+          href="https://fonts.googleapis.com/css2?family=Gidole&display=swap"
+          rel="stylesheet"
+        />
+      </head>
       <body
-        className={`mx-auto font-sans bg-[url('/we.jpg')] dark:bg-gray-950 dark:bg-[url('/bg.gif')] bg-fixed bg-cover bg-center ${GeistSans.variable}`}
+        className={`mx-auto font-sans bg-[url('/we.jpg')] dark:bg-gray-950 dark:bg-[url('/bg.gif')] bg-fixed bg-cover bg-center ${GeistSans.variable} font-gidole`}
       >
         <ThemeProvider
           attribute="class"
@@ -71,10 +77,10 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <Header />
-          
+
           <main className="pt-auto ">
             <PageTransition>
-            {children}
+              {children}
             </PageTransition>
             <SpeedInsights />
             <Analytics />

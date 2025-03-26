@@ -65,7 +65,7 @@ const certificates = [
 
 export default function Home() {
   return (
-    <div className="max-w-3xl mx-auto   px-2 font-sans shadow-2xl dark:bg-gray-950/70 shadow-black  backdrop-blur-xl rounded-xl mr-2 ml-2 p-2  sm:p-6   sm:mx-auto">
+    <div className="max-w-3xl mx-auto  px-2 shadow-2xl dark:bg-gray-950/70 shadow-black  backdrop-blur-xl rounded-xl mr-2 ml-2 p-2  sm:p-6   sm:mx-auto">
 
 
       <div >
@@ -74,7 +74,7 @@ export default function Home() {
       <div className="px-2">
 
         <section className="py-6">
-          <h2 className="text-3xl font-bold mb-6">Hey there! 👋</h2>
+          <h2 className="text-3xl font-bold font-merriweather mb-6">Hey there! 👋</h2>
           <p className="text-gray-700 dark:text-gray-300 mb-6">
             I am a <span className="font-semibold">Software Development Engineer</span>, passionate about backend development and cloud-native technologies. Currently I am working at {" "}
             <a
